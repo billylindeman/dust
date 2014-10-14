@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.util.Base64;
+import android.util.Log;
 
 import com.billylindeman.dust.util.Color;
 
@@ -41,11 +42,8 @@ public class EmitterConfig {
     float finishParticleSize, finishParticleSizeVariance;
 
     int maxParticles;
-    int particleCount;
 
-    float emissionRate;
-    float emitCounter;
-    float elapsedTime;
+
     float duration;
     float rotationStart, rotationStartVariance;
     float rotationEnd, rotationEndVariance;
@@ -115,12 +113,11 @@ public class EmitterConfig {
         rotationEnd                 = parseFloatValueForElement(doc, "rotationEnd");
         rotationEndVariance         = parseFloatValueForElement(doc, "rotationEndVariance");
 
-        emissionRate = maxParticles / particleLifespan;
-        emitCounter = 0;
-
 
         texture = parseBase64GzippedTextureFromDocument(doc);
-
+        if(texture == null) {
+            Log.d("EmitterConfig", "Texture format in PEX file unsupported!");
+        }
     }
 
 

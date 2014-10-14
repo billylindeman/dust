@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.billylindeman.dust.particle.Emitter;
 import com.billylindeman.dust.particle.EmitterConfig;
@@ -16,8 +17,11 @@ public class DustActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dust);
 
-        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.plasma_glow));
+        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.confetti));
         Emitter e = new Emitter(config);
+
+        ImageView imageView = (ImageView)findViewById(R.id.imageview);
+        imageView.setImageBitmap(config.texture);
     }
 
 
