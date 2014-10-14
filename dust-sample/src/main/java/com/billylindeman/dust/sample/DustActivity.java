@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.billylindeman.dust.particle.Emitter;
+import com.billylindeman.dust.particle.EmitterConfig;
+
 
 public class DustActivity extends Activity {
 
@@ -13,7 +16,8 @@ public class DustActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dust);
 
-
+        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.plasma_glow));
+        Emitter e = new Emitter(config);
     }
 
 

@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class EmitterConfig {
     int emitterType;
 
-    Bitmap texture;
+    public Bitmap texture;
 
     PointF sourcePosition, sourcePositionVariance;
     float angle, angleVariance;
@@ -83,7 +83,7 @@ public class EmitterConfig {
         sourcePositionVariance      = parsePointValueForElement(doc, "sourcePositionVariance");
         speed                       = parseFloatValueForElement(doc, "speed");
         speedVariance               = parseFloatValueForElement(doc, "speedVariance");
-        particleLifespan            = parseFloatValueForElement(doc, "particleLifespan");
+        particleLifespan            = parseFloatValueForElement(doc, "particleLifeSpan");
         particleLifespanVariance    = parseFloatValueForElement(doc, "particleLifespanVariance");
         angle                       = parseFloatValueForElement(doc, "angle");
         angleVariance               = parseFloatValueForElement(doc, "angleVariance");
