@@ -74,8 +74,9 @@ public class GLParticleLayer extends GLSurfaceView {
         public void onDrawFrame(GL10 gl) {
             gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
+            float delta = getFrameDeltaTime();
+
             if(emitters != null) {
-                float delta = getFrameDeltaTime();
                 for(Emitter emitter : emitters) {
                     if(!texturedRectMap.containsKey(emitter)) {
                         TexturedRect tr = new TexturedRect(gl, emitter.getConfig().texture);
@@ -91,6 +92,7 @@ public class GLParticleLayer extends GLSurfaceView {
         public void addEmitter(Emitter e) {
             emitters.add(e);
         }
+
 
         private float getFrameDeltaTime() {
             long frameTime = SystemClock.elapsedRealtime();
@@ -113,11 +115,10 @@ public class GLParticleLayer extends GLSurfaceView {
 
                 gl.glPushMatrix();
                 gl.glTranslatef(p.position.x, p.position.y, 0);
-                gl.glScalef(5,5,0);
+                gl.glScalef(5, 5, 0);
                 gl.glRotatef((float)p.angle, 0,0,1);
                 tr.draw(gl, p.color);
                 gl.glPopMatrix();
-
             }
         }
 

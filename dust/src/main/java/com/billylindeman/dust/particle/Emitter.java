@@ -11,6 +11,7 @@ public class Emitter {
 
     EmitterConfig config;
 
+    EmitterThread physicsThread = new EmitterThread();
 
     boolean active;
     Particle[] particles;
@@ -33,11 +34,28 @@ public class Emitter {
         emitCounter = 0;
         active = true;
 
+        physicsThread.start();
+
     }
 
 
+    class EmitterThread extends Thread {
 
-    public synchronized void updateWithDelta(float delta) {
+        @Override
+        public void run() {
+            while(active) {
+            }
+        }
+
+
+    }
+
+    Vector2 tmp = new Vector2(),
+            radial = new Vector2(),
+            tangential= new Vector2(),
+            positionDifference = new Vector2();
+
+    public void updateWithDelta(float delta) {
         if(active && emissionRate > 0) {
             float rate = 1.0f / emissionRate;
 
@@ -74,31 +92,34 @@ public class Emitter {
                     particle.position.y = config.sourcePosition.y - (float)Math.sin((float)particle.angle) * particle.radius;
 
                 }else if (config.emitterType == kParticleTypeGravity) {
-                    Vector2 tmp, radial,tangential;
 
-                    radial = new Vector2(0,0);
+                    radial.zero();
 
-                    Vector2 positionDifference = Vector2.subtract(particle.startPos, new Vector2());
-                    particle.position = Vector2.subtract(particle.position, positionDifference);
+                    positionDifference.zero().clone(particle.startPos);
+                    particle.position.subtract(positionDifference);
 
                     if(particle.position.x != 0 || particle.position.y != 0) {
-                        radial = Vector2.normalize(particle.position);
+                        radial.clone(particle.position).normalize();
                     }
 
-                    tangential = radial;
-                    radial = Vector2.multiplyScalar(radial, particle.radialAcceleration);
+                    tangential.clone(radial);
+                    radial.multiplyScalar(particle.radialAcceleration);
+
                     float newy = tangential.x;
                     tangential.x = -tangential.y;
                     tangential.y = newy;
-                    tangential = Vector2.multiplyScalar(tangential, particle.tangentialAcceleration);
+                    tangential.multiplyScalar(particle.tangentialAcceleration);
 
-                    tmp = Vector2.add(Vector2.add(radial,tangential), config.gravity);
-                    tmp = Vector2.multiplyScalar(tmp, delta);
-                    particle.direction = Vector2.add(particle.direction, tmp);
-                    tmp  = Vector2.multiplyScalar(particle.direction, delta);
 
-                    particle.position = Vector2.add(particle.position, tmp);
-                    particle.position = Vector2.add(particle.position, positionDifference);
+                    tmp.zero();
+                    tmp.add(radial).add(tangential).add(config.gravity);
+                    tmp.multiplyScalar(delta);
+                    particle.direction.add(tmp);
+
+                    tmp.clone(particle.direction).multiplyScalar(delta);
+
+                    particle.position.add(tmp);
+                    particle.position.add(positionDifference);
                 }
 
                 /** update particles color */
@@ -160,6 +181,7 @@ public class Emitter {
         }
         emitCounter = 0;
         emissionRate = (float)config.maxParticles / config.particleLifespan;
+
     }
 
     public Particle[] getParticles() {
