@@ -4,10 +4,10 @@ package com.billylindeman.dust.util;
  *
  */
 public class Color {
-    byte red;
-    byte green;
-    byte blue;
-    byte alpha;
+    public float r;
+    public float g;
+    public float b;
+    public float a;
 
     public Color() {
 
@@ -18,8 +18,8 @@ public class Color {
     }
 
 
-    public int getPacked() {
-        return (alpha << 24) | (red << 16) | (green << 8) | blue;
-    }
+//    public int getPacked() {
+//        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+//    }
 
 }

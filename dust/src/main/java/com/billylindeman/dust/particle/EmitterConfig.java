@@ -2,11 +2,11 @@ package com.billylindeman.dust.particle;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PointF;
 import android.util.Base64;
 import android.util.Log;
 
 import com.billylindeman.dust.util.Color;
+import com.billylindeman.dust.util.Vector2;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,12 +27,12 @@ public class EmitterConfig {
 
     public Bitmap texture;
 
-    PointF sourcePosition, sourcePositionVariance;
+    Vector2 sourcePosition, sourcePositionVariance;
     float angle, angleVariance;
     float speed, speedVariance;
     float radialAcceleration, tangentialAcceleration;
     float radialAccelVariance, tangentialAccelVariance;
-    PointF gravity;
+    Vector2 gravity;
     float particleLifespan, particleLifespanVariance;
 
     Color startColor, startColorVariance;
@@ -139,12 +139,12 @@ public class EmitterConfig {
         return Boolean.parseBoolean(element.getAttribute("value"));
     }
 
-    private PointF parsePointValueForElement(Document doc, String name) {
+    private Vector2 parsePointValueForElement(Document doc, String name) {
         NodeList elements = doc.getElementsByTagName(name);
         Element element = (Element)elements.item(0);
         float x = Float.parseFloat(element.getAttribute("x"));
         float y = Float.parseFloat(element.getAttribute("y"));
-        return new PointF(x,y);
+        return new Vector2(x,y);
     }
 
     /**
@@ -159,6 +159,7 @@ public class EmitterConfig {
 
         byte[] compressedImageBytes = Base64.decode(base64Data, Base64.DEFAULT);
         GZIPInputStream decrompressionStream = new GZIPInputStream(new ByteArrayInputStream(compressedImageBytes));
+
         return BitmapFactory.decodeStream(decrompressionStream);
     }
 

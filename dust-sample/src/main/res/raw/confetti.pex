@@ -2,7 +2,7 @@
 <particleEmitterConfig>
     <absolutePosition value="0"></absolutePosition>
     <yCoordFlipped value="1"></yCoordFlipped>
-    <sourcePosition x="150.00" y="50.00"></sourcePosition>
+    <sourcePosition x="180.00" y="480.00"></sourcePosition>
     <sourcePositionVariance x="180.00" y="7.00"></sourcePositionVariance>
     <speed value="0.00"></speed>
     <speedVariance value="30.00"></speedVariance>
@@ -19,7 +19,7 @@
     <startColorVariance red="1.00" green="1.00" blue="1.00" alpha="1.00"></startColorVariance>
     <finishColor red="1.00" green="1.00" blue="1.00" alpha="1.00"></finishColor>
     <finishColorVariance red="1.00" green="1.00" blue="1.00" alpha="1.00"></finishColorVariance>
-    <maxParticles value="2000"></maxParticles>
+    <maxParticles value="600"></maxParticles>
     <startParticleSize value="12.00"></startParticleSize>
     <startParticleSizeVariance value="0.00"></startParticleSizeVariance>
     <finishParticleSize value="12.00"></finishParticleSize>

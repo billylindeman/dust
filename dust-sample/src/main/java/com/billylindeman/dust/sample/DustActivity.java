@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
+import com.billylindeman.dust.layer.GLParticleLayer;
 import com.billylindeman.dust.particle.Emitter;
 import com.billylindeman.dust.particle.EmitterConfig;
 
@@ -19,9 +19,12 @@ public class DustActivity extends Activity {
 
         EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.confetti));
         Emitter e = new Emitter(config);
+        e.reset();
 
-        ImageView imageView = (ImageView)findViewById(R.id.imageview);
-        imageView.setImageBitmap(config.texture);
+
+        GLParticleLayer layer = (GLParticleLayer)findViewById(R.id.gl_particle_layer);
+        layer.addEmitter(e);
+
     }
 
 
