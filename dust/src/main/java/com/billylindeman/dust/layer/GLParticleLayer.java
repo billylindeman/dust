@@ -33,7 +33,6 @@ public class GLParticleLayer extends GLSurfaceView {
     }
 
     private void init() {
-        setZOrderOnTop(true);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         getHolder().setFormat(PixelFormat.RGBA_8888);
 

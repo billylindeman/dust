@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.billylindeman.dust.layer.GLParticleLayer;
 import com.billylindeman.dust.particle.Emitter;
@@ -11,19 +14,32 @@ import com.billylindeman.dust.particle.EmitterConfig;
 
 
 public class DustActivity extends Activity {
-
+    Button startStop;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dust);
 
         EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.confetti));
-        Emitter e = new Emitter(config);
-        e.reset();
-
+        final Emitter e = new Emitter(config);
 
         GLParticleLayer layer = (GLParticleLayer)findViewById(R.id.gl_particle_layer);
         layer.addEmitter(e);
+
+        startStop = (Button)findViewById(R.id.button);
+        startStop.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(e.isActive()) {
+                    startStop.setText("start");
+                    e.stopEmission();
+                }else {
+                    startStop.setText("stop");
+                    e.startEmission();
+                }
+
+            }
+        });
 
     }
 

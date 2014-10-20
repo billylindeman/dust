@@ -11,8 +11,6 @@ public class Emitter {
 
     EmitterConfig config;
 
-    EmitterThread physicsThread = new EmitterThread();
-
     boolean active;
     Particle[] particles;
 
@@ -30,23 +28,8 @@ public class Emitter {
             particles[i] = new Particle(config);
         }
 
-        emissionRate = (float)config.maxParticles / config.particleLifespan;
-        emitCounter = 0;
-        active = true;
-
-        physicsThread.start();
-
-    }
-
-
-    class EmitterThread extends Thread {
-
-        @Override
-        public void run() {
-            while(active) {
-            }
-        }
-
+        active = false;
+        reset();
 
     }
 
@@ -172,8 +155,11 @@ public class Emitter {
         emitCounter = 0;
     }
 
+    public synchronized void startEmission() {
+        active=true;
+    }
+
     public synchronized void reset() {
-        active = true;
         elapsedTime =0;
         for(int i=0; i<particleCount; i++) {
             particles[i].init();
@@ -194,6 +180,10 @@ public class Emitter {
 
     public EmitterConfig getConfig() {
         return config;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
 }
