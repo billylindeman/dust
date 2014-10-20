@@ -35,6 +35,8 @@ public class Emitter {
 
     }
 
+
+
     public synchronized void updateWithDelta(float delta) {
         if(active && emissionRate > 0) {
             float rate = 1.0f / emissionRate;
@@ -166,6 +168,10 @@ public class Emitter {
 
     public int getParticleCount() {
         return particleCount;
+    }
+
+    public EmitterConfig getConfig() {
+        return config;
     }
 
 }
