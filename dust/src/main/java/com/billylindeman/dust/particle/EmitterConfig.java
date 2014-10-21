@@ -27,7 +27,7 @@ public class EmitterConfig {
 
     public Bitmap texture;
 
-    Vector2 sourcePosition, sourcePositionVariance;
+    public Vector2 sourcePosition, sourcePositionVariance;
     float angle, angleVariance;
     float speed, speedVariance;
     float radialAcceleration, tangentialAcceleration;

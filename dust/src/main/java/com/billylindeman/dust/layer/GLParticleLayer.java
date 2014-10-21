@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 
 import com.billylindeman.dust.particle.Emitter;
 import com.billylindeman.dust.particle.Particle;
+import com.billylindeman.dust.util.Vector2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,9 @@ public class GLParticleLayer extends GLSurfaceView {
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         getHolder().setFormat(PixelFormat.RGBA_8888);
 
+//        setEGLContextClientVersion(2);
+//        setPreserveEGLContextOnPause(true);
+
         particleRenderer = new ParticleRenderer();
         setRenderer(particleRenderer);
 
@@ -57,6 +61,7 @@ public class GLParticleLayer extends GLSurfaceView {
         Map<Emitter,TexturedRect> texturedRectMap = new HashMap<Emitter,TexturedRect>();
         long lastFrame = SystemClock.elapsedRealtime();
 
+        Vector2 size = new Vector2();
 
         @Override
         public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
@@ -66,7 +71,10 @@ public class GLParticleLayer extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int w, int h) {
             gl.glViewport(0, 0, w, h);
-            gl.glOrthof(0,360,0,480,0,1);
+            gl.glOrthof(0,320,0,480,0,1);
+
+            size.x  =w;
+            size.y=h;
         }
 
         @Override
@@ -89,7 +97,11 @@ public class GLParticleLayer extends GLSurfaceView {
         }
 
         public void addEmitter(Emitter e) {
+            e.getConfig().sourcePosition.x = 160;
+            e.getConfig().sourcePosition.y = 240;
+
             emitters.add(e);
+
         }
 
 
@@ -107,14 +119,13 @@ public class GLParticleLayer extends GLSurfaceView {
             TexturedRect tr = texturedRectMap.get(e);
 
             gl.glEnable(GL10.GL_BLEND);
-            gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+            gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
 
             for(int i=0; i<count ; i++) {
                 Particle p = particles[i];
-
                 gl.glPushMatrix();
                 gl.glTranslatef(p.position.x, p.position.y, 0);
-                gl.glScalef(5, 5, 0);
+                gl.glScalef(.5f*p.particleSize, .5f*p.particleSize, 0);
                 gl.glRotatef((float)p.angle, 0,0,1);
                 tr.draw(gl, p.color);
                 gl.glPopMatrix();

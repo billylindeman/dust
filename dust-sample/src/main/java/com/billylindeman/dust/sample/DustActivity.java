@@ -20,7 +20,7 @@ public class DustActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dust);
 
-        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.confetti));
+        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.crazyblue));
         final Emitter e = new Emitter(config);
 
         GLParticleLayer layer = (GLParticleLayer)findViewById(R.id.gl_particle_layer);

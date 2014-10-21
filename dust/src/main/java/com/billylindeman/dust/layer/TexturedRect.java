@@ -66,10 +66,10 @@ public class TexturedRect {
     public void draw(GL10 gl, Color c){
 
         float colorBuffer[] = {
-                c.r,c.g,c.b,1.0f,
-                c.r,c.g,c.b,1.0f,
-                c.r,c.g,c.b,1.0f,
-                c.r,c.g,c.b,1.0f,
+                c.r,c.g,c.b,c.a,
+                c.r,c.g,c.b,c.a,
+                c.r,c.g,c.b,c.a,
+                c.r,c.g,c.b,c.a,
         };
 
         gl.glFrontFace(GL10.GL_CCW);
