@@ -37,6 +37,7 @@ public class TexturedRect {
     private FloatBuffer vertexBuffer;
     private FloatBuffer texCoordBuffer;
     private ShortBuffer indexBuffer;
+    private FloatBuffer colorBuffer;
 
     public TexturedRect(GL10 gl, final Bitmap bitmap){
 
@@ -60,17 +61,24 @@ public class TexturedRect {
         indexBuffer.position(0);
 
         texCoordBuffer = makeFloatBuffer(texcoords);
+
+        ByteBuffer colorbb = ByteBuffer.allocateDirect(16*4);
+        colorbb.order(ByteOrder.nativeOrder());
+        colorBuffer = colorbb.asFloatBuffer();
+
     }
 
 
     public void draw(GL10 gl, Color c){
-
-        float colorBuffer[] = {
+        float cb[] = {
                 c.r,c.g,c.b,c.a,
                 c.r,c.g,c.b,c.a,
                 c.r,c.g,c.b,c.a,
                 c.r,c.g,c.b,c.a,
         };
+        colorBuffer.put(cb);
+        colorBuffer.position(0);
+
 
         gl.glFrontFace(GL10.GL_CCW);
         gl.glEnable(GL10.GL_CULL_FACE);
@@ -86,7 +94,7 @@ public class TexturedRect {
 
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
         gl.glTexCoordPointer(2,GL10.GL_FLOAT, 0, texCoordBuffer);
-        gl.glColorPointer(4, GL10.GL_FLOAT, 0, makeFloatBuffer(colorBuffer));
+        gl.glColorPointer(4, GL10.GL_FLOAT, 0, colorBuffer);
 
         gl.glDrawElements(GL10.GL_TRIANGLES, indices.length, GL10.GL_UNSIGNED_SHORT, indexBuffer);
 
