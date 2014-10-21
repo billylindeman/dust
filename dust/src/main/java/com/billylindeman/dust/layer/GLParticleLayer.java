@@ -2,6 +2,7 @@ package com.billylindeman.dust.layer;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.util.AttributeSet;
@@ -37,8 +38,8 @@ public class GLParticleLayer extends GLSurfaceView {
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         getHolder().setFormat(PixelFormat.RGBA_8888);
 
-//        setEGLContextClientVersion(2);
-//        setPreserveEGLContextOnPause(true);
+        setEGLContextClientVersion(2);
+        setPreserveEGLContextOnPause(true);
 
         particleRenderer = new ParticleRenderer();
         setRenderer(particleRenderer);
@@ -70,8 +71,8 @@ public class GLParticleLayer extends GLSurfaceView {
 
         @Override
         public void onSurfaceChanged(GL10 gl, int w, int h) {
-            gl.glViewport(0, 0, w, h);
-            gl.glOrthof(0,320,0,480,0,1);
+            GLES20.glViewport(0, 0, w, h);
+            GLES20.glOrthof(0,320,0,480,0,1);
 
             size.x  =w;
             size.y=h;
@@ -79,7 +80,7 @@ public class GLParticleLayer extends GLSurfaceView {
 
         @Override
         public void onDrawFrame(GL10 gl) {
-            gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+            GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
             float delta = getFrameDeltaTime();
 
@@ -118,8 +119,8 @@ public class GLParticleLayer extends GLSurfaceView {
 
             TexturedRect tr = texturedRectMap.get(e);
 
-            gl.glEnable(GL10.GL_BLEND);
-            gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+            GLES20.glEnable(GLES20.GL_BLEND);
+            GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE);
 
             for(int i=0; i<count ; i++) {
                 Particle p = particles[i];
