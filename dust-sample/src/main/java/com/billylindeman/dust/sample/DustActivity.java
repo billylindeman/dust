@@ -20,22 +20,32 @@ public class DustActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dust);
 
-        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.crazyblue));
-        final Emitter e = new Emitter(config);
+        EmitterConfig config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.confetti));
+        final Emitter confetti = new Emitter(config);
+        config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.starexplosion));
+        final Emitter stars = new Emitter(config);
+        config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.staroutlineexplosion));
+        final Emitter staroutlines = new Emitter(config);
 
         GLParticleLayer layer = (GLParticleLayer)findViewById(R.id.gl_particle_layer);
-        layer.addEmitter(e);
+        layer.addEmitter(confetti);
+        layer.addEmitter(stars);
+        layer.addEmitter(staroutlines);
 
         startStop = (Button)findViewById(R.id.button);
         startStop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(e.isActive()) {
+                if(stars.isActive()) {
                     startStop.setText("start");
-                    e.stopEmission();
+                    stars.stopEmission();
+                    confetti.stopEmission();
+                    staroutlines.stopEmission();
                 }else {
                     startStop.setText("stop");
-                    e.startEmission();
+                    stars.startEmission();
+                    confetti.startEmission();
+                    staroutlines.startEmission();
                 }
 
             }

@@ -21,7 +21,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "org.apache.sanselan:sanselan:0.97-incubator"
+//    compile "org.apache.sanselan:sanselan:0.97-incubator"
 }
 
 

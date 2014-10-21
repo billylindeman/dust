@@ -97,8 +97,7 @@ public class GLParticleLayer extends GLSurfaceView {
         }
 
         public void addEmitter(Emitter e) {
-            e.getConfig().sourcePosition.x = 160;
-            e.getConfig().sourcePosition.y = 240;
+
 
             emitters.add(e);
 

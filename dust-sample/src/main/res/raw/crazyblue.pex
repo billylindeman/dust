@@ -1,7 +1,7 @@
 
 <particleEmitterConfig>
     <yCoordFlipped value="1"></yCoordFlipped>
-    <sourcePosition x="150.00" y="50.00"></sourcePosition>
+    <sourcePosition x="180.00" y="50.00"></sourcePosition>
     <sourcePositionVariance x="0.00" y="-64.00"></sourcePositionVariance>
     <speed value="92.05"></speed>
     <speedVariance value="0.00"></speedVariance>

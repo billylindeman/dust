@@ -16,8 +16,9 @@ public class Particle {
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
     public Vector2 startPos = new Vector2();
-    public Color color;
-    public Color deltaColor;
+    public Color color = new Color();
+    public Color endColor = new Color();
+    public Color deltaColor = new Color();
     public float rotation;
     public float rotationDelta;
     public float radialAcceleration;
@@ -45,12 +46,12 @@ public class Particle {
 
         //Init the direction of particle
         float newAngle = config.angle + config.angleVariance * randomMinusOneToOne();
-
-        Vector2 vector = new Vector2((float)Math.cos(newAngle),(float)Math.sin(newAngle));
         float vectorSpeed = config.speed + config.speedVariance * randomMinusOneToOne();
 
         // calculate direction from angle'd vector multiplied by scalar speed
-        direction = Vector2.multiplyScalar(vector, vectorSpeed);
+        direction.x = (float)Math.cos(Math.toRadians(newAngle));
+        direction.y = (float)Math.sin(Math.toRadians(newAngle));
+        direction.multiplyScalar(vectorSpeed);
 
         timeToLive = Math.max(0, config.particleLifespan + config.particleLifespanVariance*randomMinusOneToOne());
 
@@ -71,24 +72,20 @@ public class Particle {
         particleSizeDelta = ((particleFinishSize - particleStartSize) / timeToLive);
 
 
-        Color startColor = new Color();
-        startColor.r = config.startColor.r + config.startColorVariance.r*randomMinusOneToOne();
-        startColor.g = config.startColor.g + config.startColorVariance.g*randomMinusOneToOne();
-        startColor.b = config.startColor.b + config.startColorVariance.b*randomMinusOneToOne();
-        startColor.a = config.startColor.a + config.startColorVariance.a*randomMinusOneToOne();
+        color.r = config.startColor.r + config.startColorVariance.r*randomMinusOneToOne();
+        color.g = config.startColor.g + config.startColorVariance.g*randomMinusOneToOne();
+        color.b = config.startColor.b + config.startColorVariance.b*randomMinusOneToOne();
+        color.a = config.startColor.a + config.startColorVariance.a*randomMinusOneToOne();
 
-        Color endColor = new Color();
         endColor.r = config.finishColor.r + config.finishColorVariance.r*randomMinusOneToOne();
         endColor.g = config.finishColor.g + config.finishColorVariance.g*randomMinusOneToOne();
         endColor.b = config.finishColor.b + config.finishColorVariance.b*randomMinusOneToOne();
         endColor.a = config.finishColor.a + config.finishColorVariance.a*randomMinusOneToOne();
 
-        color = startColor;
-        deltaColor = new Color();
-        deltaColor.r = ((endColor.r - startColor.r) / timeToLive);
-        deltaColor.g = ((endColor.g - startColor.g) / timeToLive);
-        deltaColor.b = ((endColor.b - startColor.b) / timeToLive);
-        deltaColor.a = ((endColor.a - startColor.a) / timeToLive);
+        deltaColor.r = ((endColor.r - color.r) / timeToLive);
+        deltaColor.g = ((endColor.g - color.g) / timeToLive);
+        deltaColor.b = ((endColor.b - color.b) / timeToLive);
+        deltaColor.a = ((endColor.a - color.a) / timeToLive);
 
 
         float startA = config.rotationStart + config.rotationStartVariance*randomMinusOneToOne();
