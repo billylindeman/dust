@@ -27,11 +27,14 @@ public class Emitter {
         for(int i=0; i<config.maxParticles; i++) {
             particles[i] = new Particle(config);
         }
-
         active = false;
         reset();
-
     }
+
+    public void setPosition(Vector2 position) {
+        getConfig().sourcePosition = position;
+    }
+
 
     Vector2 tmp = new Vector2(),
             radial = new Vector2(),
@@ -64,7 +67,6 @@ public class Emitter {
 
             /** If particle is still alive, lets update it */
             if(particle.timeToLive > 0) {
-
                 /** Update positions based on emitter type*/
                 if(config.emitterType == kParticleTypeRadial) {
                     particle.angle += particle.degreesPerSecond*delta;
@@ -92,7 +94,6 @@ public class Emitter {
                     tangential.x = -tangential.y;
                     tangential.y = newy;
                     tangential.multiplyScalar(particle.tangentialAcceleration);
-
 
                     tmp.zero();
                     tmp.add(radial).add(tangential).add(config.gravity);

@@ -15,6 +15,7 @@ import com.billylindeman.dust.particle.EmitterConfig;
 
 public class DustActivity extends Activity {
     Button startStop;
+    GLParticleLayer particleLayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,32 +28,50 @@ public class DustActivity extends Activity {
         config = EmitterConfig.fromStream(getResources().openRawResource(R.raw.staroutlineexplosion));
         final Emitter staroutlines = new Emitter(config);
 
-        GLParticleLayer layer = (GLParticleLayer)findViewById(R.id.gl_particle_layer);
-        layer.addEmitter(confetti);
-        layer.addEmitter(stars);
-        layer.addEmitter(staroutlines);
+        particleLayer = (GLParticleLayer)findViewById(R.id.gl_particle_layer);
+        particleLayer.addEmitter(confetti);
+        particleLayer.addEmitter(stars);
+        particleLayer.addEmitter(staroutlines);
 
         startStop = (Button)findViewById(R.id.button);
         startStop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(stars.isActive()) {
+
                     startStop.setText("start");
                     stars.stopEmission();
                     confetti.stopEmission();
                     staroutlines.stopEmission();
                 }else {
+                    stars.setPosition(particleLayer.getLayerPositionForView(startStop));
+                    staroutlines.setPosition(particleLayer.getLayerPositionForView(startStop));
+
                     startStop.setText("stop");
                     stars.startEmission();
                     confetti.startEmission();
                     staroutlines.startEmission();
                 }
-
             }
         });
 
+
+
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        particleLayer.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        particleLayer.onPause();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

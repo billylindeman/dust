@@ -75,4 +75,8 @@ public class Vector2 {
     public static Vector2 add(Vector2 left, Vector2 right) {
         return new Vector2(left.x+right.x,left.y+right.y);
     }
+
+    public String toString() {
+        return "(" + x + "," + y + ")";
+    }
 }

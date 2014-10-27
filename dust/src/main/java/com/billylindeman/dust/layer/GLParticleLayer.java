@@ -2,9 +2,11 @@ package com.billylindeman.dust.layer;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.billylindeman.dust.particle.Emitter;
 import com.billylindeman.dust.particle.Particle;
@@ -22,6 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class GLParticleLayer extends GLSurfaceView {
     ParticleRenderer particleRenderer;
+    Vector2 glSize = new Vector2();
 
     public GLParticleLayer(Context context) {
         super(context);
@@ -34,11 +37,9 @@ public class GLParticleLayer extends GLSurfaceView {
     }
 
     private void init() {
+        setZOrderOnTop(true);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         getHolder().setFormat(PixelFormat.RGBA_8888);
-
-//        setEGLContextClientVersion(2);
-//        setPreserveEGLContextOnPause(true);
 
         particleRenderer = new ParticleRenderer();
         setRenderer(particleRenderer);
@@ -55,6 +56,29 @@ public class GLParticleLayer extends GLSurfaceView {
         });
     }
 
+    public Vector2 getLayerPositionForView(View v) {
+        /** Load locations for view and layer */
+        int[] viewLocationInWindow = new int[2];
+        int[] layerLocationInWindow = new int[2];
+        v.getLocationInWindow(viewLocationInWindow);
+        getLocationInWindow(layerLocationInWindow);
+
+        /** Use difference of view location and layer location */
+        Vector2 locationInWindow = new Vector2(viewLocationInWindow[0],viewLocationInWindow[1]);
+        Vector2 layerLocation = new Vector2(layerLocationInWindow[0],layerLocationInWindow[1]);
+
+        Vector2 locationInLayer = Vector2.subtract(locationInWindow,layerLocation);
+
+        Vector2 glCoordinateForLocationInLayer = new Vector2();
+        Rect window = new Rect();
+        getWindowVisibleDisplayFrame(window);
+
+        glCoordinateForLocationInLayer.x = (locationInLayer.x / window.width()) * glSize.x;
+        glCoordinateForLocationInLayer.y = ( (1- (locationInLayer.y / window.height())) * glSize.y);
+
+        return glCoordinateForLocationInLayer;
+
+    }
 
     class ParticleRenderer implements Renderer {
         ArrayList<Emitter> emitters = new ArrayList<Emitter>();
@@ -71,9 +95,12 @@ public class GLParticleLayer extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int w, int h) {
             gl.glViewport(0, 0, w, h);
-            gl.glOrthof(0,320,0,480,0,1);
 
-            size.x  =w;
+            glSize.x = 320;
+            glSize.y = ((float)h/(float)w)*320;
+            gl.glOrthof(0,glSize.x,0,glSize.y,0,1);
+
+            size.x=w;
             size.y=h;
         }
 
