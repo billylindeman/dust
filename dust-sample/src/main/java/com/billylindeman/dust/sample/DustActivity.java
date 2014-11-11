@@ -41,7 +41,6 @@ public class DustActivity extends Activity {
 
                     startStop.setText("start");
                     stars.stopEmission();
-                    confetti.stopEmission();
                     staroutlines.stopEmission();
                 }else {
                     stars.setPosition(particleLayer.getLayerPositionForView(startStop));
@@ -49,7 +48,6 @@ public class DustActivity extends Activity {
 
                     startStop.setText("stop");
                     stars.startEmission();
-                    confetti.startEmission();
                     staroutlines.startEmission();
                 }
             }
@@ -62,15 +60,15 @@ public class DustActivity extends Activity {
 
     @Override
     protected void onResume() {
-        super.onResume();
         particleLayer.onResume();
+        super.onResume();
 
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
-        particleLayer.onPause();
     }
 
     @Override

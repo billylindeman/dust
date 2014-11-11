@@ -31,6 +31,7 @@ public class TexturedRect {
     };
 
     final int[] textureHandle = new int[1];
+    boolean textureIsRegistered = false;
 
     private short[] indices = {0,1,2,0,2,3};
 
@@ -39,15 +40,7 @@ public class TexturedRect {
     private ShortBuffer indexBuffer;
     private FloatBuffer colorBuffer;
 
-    public TexturedRect(GL10 gl, final Bitmap bitmap){
-
-        /** Load bitmap into GL texture */
-        gl.glGenTextures(1, textureHandle, 0);
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureHandle[0]);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST);
-        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-
+    public TexturedRect(){
         ByteBuffer vbb  = ByteBuffer.allocateDirect(vertices.length * 4);
         vbb.order(ByteOrder.nativeOrder());
         vertexBuffer = vbb.asFloatBuffer();
@@ -65,9 +58,27 @@ public class TexturedRect {
         ByteBuffer colorbb = ByteBuffer.allocateDirect(16*4);
         colorbb.order(ByteOrder.nativeOrder());
         colorBuffer = colorbb.asFloatBuffer();
-
     }
 
+    public void registerTextureHandle(GL10 gl, final Bitmap bitmap) {
+        /** Load bitmap into GL texture */
+        gl.glGenTextures(1, textureHandle, 0);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureHandle[0]);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST);
+        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+
+        textureIsRegistered = true;
+    }
+
+    public void freeTextureHandle(GL10 gl) {
+        gl.glDeleteTextures(1, textureHandle, 0);
+        textureIsRegistered = false;
+    }
+
+    public boolean hasTexture() {
+        return textureIsRegistered;
+    }
 
     public void draw(GL10 gl, Color c){
         float cb[] = {

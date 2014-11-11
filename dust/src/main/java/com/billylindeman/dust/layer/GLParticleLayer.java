@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLUtils;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.billylindeman.dust.particle.Emitter;
@@ -26,6 +28,7 @@ public class GLParticleLayer extends GLSurfaceView {
     ParticleRenderer particleRenderer;
     Vector2 glSize = new Vector2();
 
+
     public GLParticleLayer(Context context) {
         super(context);
         init();
@@ -36,14 +39,23 @@ public class GLParticleLayer extends GLSurfaceView {
         init();
     }
 
-    private void init() {
-        setZOrderOnTop(true);
-        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        getHolder().setFormat(PixelFormat.RGBA_8888);
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("GLParticleLayer", "Pausing particle layer");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("GLParticleLayer", "Resuming particle layer");
+
+
+    }
+
+    private void init() {
         particleRenderer = new ParticleRenderer();
         setRenderer(particleRenderer);
-
         setRenderMode(RENDERMODE_CONTINUOUSLY);
     }
 
@@ -86,14 +98,30 @@ public class GLParticleLayer extends GLSurfaceView {
         long lastFrame = SystemClock.elapsedRealtime();
 
         Vector2 size = new Vector2();
+        public ParticleRenderer() {
+            setPreserveEGLContextOnPause(true);
+            setZOrderOnTop(true);
+            setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+            getHolder().setFormat(PixelFormat.RGBA_8888);
+
+        }
+
 
         @Override
-        public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-
+        public void onSurfaceCreated(GL10 gl, EGLConfig eglConfig) {
+            Log.d("GL", "surface created");
+            texturedRectMap = new HashMap<Emitter, TexturedRect>();
+            for(Emitter e : emitters) {
+                TexturedRect tr = new TexturedRect();
+                tr.registerTextureHandle(gl, e.getConfig().texture);
+                texturedRectMap.put(e,tr);
+            }
         }
 
         @Override
         public void onSurfaceChanged(GL10 gl, int w, int h) {
+            Log.d("GL", "surface changed");
+
             gl.glViewport(0, 0, w, h);
 
             glSize.x = 320;
@@ -102,6 +130,7 @@ public class GLParticleLayer extends GLSurfaceView {
 
             size.x=w;
             size.y=h;
+
         }
 
         @Override
@@ -111,23 +140,19 @@ public class GLParticleLayer extends GLSurfaceView {
             float delta = getFrameDeltaTime();
 
             if(emitters != null) {
+                Log.d("GL", "in emitters");
                 for(Emitter emitter : emitters) {
-                    if(!texturedRectMap.containsKey(emitter)) {
-                        TexturedRect tr = new TexturedRect(gl, emitter.getConfig().texture);
-                        texturedRectMap.put(emitter,tr);
-                    }
                     emitter.updateWithDelta(delta);
                     drawParticlesForEmitter(gl, emitter);
                 }
             }
 
+            int glerror = gl.glGetError();
+            if(glerror !=0) Log.d("Error", GLUtils.getEGLErrorString(glerror));
         }
 
         public void addEmitter(Emitter e) {
-
-
             emitters.add(e);
-
         }
 
 
@@ -139,10 +164,12 @@ public class GLParticleLayer extends GLSurfaceView {
         }
 
         private void drawParticlesForEmitter(GL10 gl, Emitter e) {
+
             int count = e.getParticleCount();
             Particle[] particles = e.getParticles();
 
             TexturedRect tr = texturedRectMap.get(e);
+            Log.d("GL", "drawing particles for emitter with tr:" + tr);
 
             gl.glEnable(GL10.GL_BLEND);
             gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
@@ -159,9 +186,6 @@ public class GLParticleLayer extends GLSurfaceView {
         }
 
     }
-
-
-
 
 
 }
