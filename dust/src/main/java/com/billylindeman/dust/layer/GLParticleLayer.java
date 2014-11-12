@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLUtils;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -138,17 +137,15 @@ public class GLParticleLayer extends GLSurfaceView {
             gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
             float delta = getFrameDeltaTime();
-
             if(emitters != null) {
-                Log.d("GL", "in emitters");
                 for(Emitter emitter : emitters) {
                     emitter.updateWithDelta(delta);
                     drawParticlesForEmitter(gl, emitter);
                 }
             }
 
-            int glerror = gl.glGetError();
-            if(glerror !=0) Log.d("Error", GLUtils.getEGLErrorString(glerror));
+//            int glerror = gl.glGetError();
+//            if(glerror !=0) Log.d("Error", GLUtils.getEGLErrorString(glerror));
         }
 
         public void addEmitter(Emitter e) {
@@ -164,12 +161,9 @@ public class GLParticleLayer extends GLSurfaceView {
         }
 
         private void drawParticlesForEmitter(GL10 gl, Emitter e) {
-
             int count = e.getParticleCount();
             Particle[] particles = e.getParticles();
-
             TexturedRect tr = texturedRectMap.get(e);
-            Log.d("GL", "drawing particles for emitter with tr:" + tr);
 
             gl.glEnable(GL10.GL_BLEND);
             gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
