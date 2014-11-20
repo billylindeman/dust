@@ -64,8 +64,9 @@ public class TexturedRect {
         /** Load bitmap into GL texture */
         gl.glGenTextures(1, textureHandle, 0);
         gl.glBindTexture(GL10.GL_TEXTURE_2D, textureHandle[0]);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 
         textureIsRegistered = true;
@@ -80,7 +81,7 @@ public class TexturedRect {
         return textureIsRegistered;
     }
 
-    public void draw(GL10 gl, Color c){
+    public void draw(GL10 gl,float size,  Color c){
         float cb[] = {
                 c.r,c.g,c.b,c.a,
                 c.r,c.g,c.b,c.a,
@@ -90,6 +91,16 @@ public class TexturedRect {
         colorBuffer.put(cb);
         colorBuffer.position(0);
 
+        size *= .5f;
+        float vertices[]={
+                -size, size, 0.0f,  //top left
+                -size,-size,0.0f,   //bottom left
+                size,-size,0.0f,    //bottom right
+                size,size,0.0f      //top right
+        };
+
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
 
         gl.glFrontFace(GL10.GL_CCW);
         gl.glEnable(GL10.GL_CULL_FACE);

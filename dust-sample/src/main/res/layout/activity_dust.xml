@@ -21,5 +21,8 @@
         android:text="start"
         />
 
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="45dp"/>
 
 </RelativeLayout>

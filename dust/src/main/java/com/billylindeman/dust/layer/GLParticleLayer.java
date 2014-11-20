@@ -125,6 +125,8 @@ public class GLParticleLayer extends GLSurfaceView {
 
             glSize.x = 320;
             glSize.y = ((float)h/(float)w)*320;
+            gl.glMatrixMode(GL10.GL_PROJECTION);
+            gl.glLoadIdentity();
             gl.glOrthof(0,glSize.x,0,glSize.y,0,1);
 
             size.x=w;
@@ -172,9 +174,8 @@ public class GLParticleLayer extends GLSurfaceView {
                 Particle p = particles[i];
                 gl.glPushMatrix();
                 gl.glTranslatef(p.position.x, p.position.y, 0);
-                gl.glScalef(.5f*p.particleSize, .5f*p.particleSize, 0);
-                gl.glRotatef((float)p.angle, 0,0,1);
-                tr.draw(gl, p.color);
+                gl.glRotatef(p.rotation, 0,0,1);
+                tr.draw(gl, p.particleSize, p.color);
                 gl.glPopMatrix();
             }
         }

@@ -44,7 +44,7 @@ public class EmitterConfig {
     int maxParticles;
 
 
-    float duration;
+    public float duration;
     float rotationStart, rotationStartVariance;
     float rotationEnd, rotationEndVariance;
 

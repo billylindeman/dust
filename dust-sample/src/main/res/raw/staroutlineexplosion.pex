@@ -1,29 +1,29 @@
 
 <particleEmitterConfig>
-    <absolutePosition value="0"></absolutePosition>
+<absolutePosition value="0"></absolutePosition>
     <yCoordFlipped value="1"></yCoordFlipped>
     <sourcePosition x="220.00" y="380.00"></sourcePosition>
-    <sourcePositionVariance x="7.00" y="7.00"></sourcePositionVariance>
-    <speed value="123.98"></speed>
-    <speedVariance value="182.42"></speedVariance>
-    <particleLifeSpan value="1.3976"></particleLifeSpan>
+    <sourcePositionVariance x="0.00" y="7.00"></sourcePositionVariance>
+    <speed value="100.00"></speed>
+    <speedVariance value="25.00"></speedVariance>
+    <particleLifeSpan value="3.0000"></particleLifeSpan>
     <particleLifespanVariance value="0.0000"></particleLifespanVariance>
-    <angle value="205.47"></angle>
-    <angleVariance value="41.09"></angleVariance>
-    <gravity x="0.00" y="-637.52"></gravity>
-    <radialAcceleration value="-105.52"></radialAcceleration>
+    <angle value="180.00"></angle>
+    <angleVariance value="60.00"></angleVariance>
+    <gravity x="0.00" y="-140.00"></gravity>
+    <radialAcceleration value="0.00"></radialAcceleration>
     <tangentialAcceleration value="0.00"></tangentialAcceleration>
     <radialAccelVariance value="0.00"></radialAccelVariance>
     <tangentialAccelVariance value="0.00"></tangentialAccelVariance>
     <startColor red="1.00" green="0.74" blue="0.00" alpha="1.00"></startColor>
-    <startColorVariance red="0.00" green="0.06" blue="0.00" alpha="0.00"></startColorVariance>
+    <startColorVariance red="0.00" green="0.14" blue="0.00" alpha="0.00"></startColorVariance>
     <finishColor red="1.00" green="0.58" blue="0.00" alpha="1.00"></finishColor>
     <finishColorVariance red="0.00" green="0.00" blue="0.00" alpha="0.00"></finishColorVariance>
-    <maxParticles value="50"></maxParticles>
-    <startParticleSize value="23.22"></startParticleSize>
-    <startParticleSizeVariance value="20.00"></startParticleSizeVariance>
-    <finishParticleSize value="9.82"></finishParticleSize>
-    <finishParticleSizeVariance value="20.00"></finishParticleSizeVariance>
+    <maxParticles value="40"></maxParticles>
+    <startParticleSize value="25.00"></startParticleSize>
+    <startParticleSizeVariance value="5.00"></startParticleSizeVariance>
+    <finishParticleSize value="25.00"></finishParticleSize>
+    <finishParticleSizeVariance value="0.00"></finishParticleSizeVariance>
     <duration value="-1.00"></duration>
     <emitterType value="0"></emitterType>
     <maxRadius value="0.00"></maxRadius>
